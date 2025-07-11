@@ -2,5 +2,26 @@
 name = "tca9554"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
+authors = ["Jacob Gelman <oss@jacobgelman.com>"]
+repository = "https://github.com/ladvoc/tca9554-rs"
+homepage = "https://github.com/ladvoc/tca9554-rs"
+documentation = "https://docs.rs/tca9554"
+description = "Driver for the TCA9554(A) I/O expander."
+readme = "README.md"
+keywords = ["embedded-hal-driver", "embassy", "async", "i2c"]
+categories = ["no-std", "embedded", "hardware-support"]
+
+[features]
+defmt = ["dep:defmt"]
 
 [dependencies]
+embedded-hal-async = { version = "1.0.0" }
+defmt = { version = "1", optional = true }
+
+[dev-dependencies]
+embedded-hal-mock = { version = "0.11.1", features = ["embedded-hal-async"] }
+tokio = { version = "1.46.1", features = ["rt", "macros"] }
+
+[profile.release]
+lto = true
