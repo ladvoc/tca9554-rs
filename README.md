@@ -1,5 +1,9 @@
 # TCA9554(A) Driver
 
+[![crates.io version](https://img.shields.io/crates/v/tca9554.svg)](https://crates.io/crates/tca9554)
+[![docs.rs documentation](https://img.shields.io/docsrs/tca9554.svg)](https://docs.rs/tca9554)
+[![CI](https://github.com/ladvoc/tca9554-rs/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/ladvoc/tca9554-rs/actions/workflows/ci.yml)
+
 Driver for the TCA9554(A) I/O expander, implementing the I²C trait from [embedded-hal-async](https://crates.io/crates/embedded-hal-async).
 
 ## Features
