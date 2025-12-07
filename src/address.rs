@@ -30,9 +30,9 @@ impl Address {
     }
 }
 
-impl Into<SevenBitAddress> for Address {
-    fn into(self) -> SevenBitAddress {
-        self.0
+impl From<Address> for SevenBitAddress {
+    fn from(val: Address) -> Self {
+        val.0
     }
 }
 
