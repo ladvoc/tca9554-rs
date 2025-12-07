@@ -21,7 +21,7 @@ defmt = { version = "1", optional = true }
 
 [dev-dependencies]
 embedded-hal-mock = { version = "0.11.1", features = ["embedded-hal-async"] }
-tokio = { version = "1.46.1", features = ["rt", "macros"] }
+tokio = { version = "1.48.0", features = ["rt", "macros"] }
 
 [profile.release]
 lto = true
