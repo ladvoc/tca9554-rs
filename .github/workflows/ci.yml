@@ -1,22 +1,36 @@
 name: CI
 on:
+  pull_request: { branches: ["master"] }
+  push: { branches: ["master"] }
+  schedule: [cron: 0 0 * * 1]
   workflow_dispatch:
-  push:
-    branches: ["master"]
-  pull_request:
-    branches: ["master"]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v6
-    - name: Setup Rust Toolchain
-      uses: actions-rust-lang/setup-rust-toolchain@v1
-    - name: Build
-      run: cargo build --verbose
-    - name: Install Nextest
-      uses: taiki-e/install-action@v2
-      with: { tool: nextest@0.9 }
-    - name: Test
-      run: cargo nextest run --profile ci
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Rust Toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+      - name: Build
+        run: cargo build --verbose
+      - name: Install Nextest
+        uses: taiki-e/install-action@v2
+        with: { tool: nextest@0.9 }
+      - name: Test
+        run: cargo nextest run --profile ci
+  release-manager:
+    name: Release Manager
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+    steps:
+      - name: Release Please
+        id: release
+        uses: googleapis/release-please-action@v4
+        with: { release-type: rust }
