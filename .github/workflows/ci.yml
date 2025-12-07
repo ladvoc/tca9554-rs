@@ -34,3 +34,17 @@ jobs:
         id: release
         uses: googleapis/release-please-action@v4
         with: { release-type: rust }
+  publish:
+    name: Publish (crates.io)
+    runs-on: ubuntu-latest
+    needs: release-manager
+    if: ${{ needs.release-manager.outputs.release_created }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Rust Toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+      - name: Publish
+        run: cargo publish
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
