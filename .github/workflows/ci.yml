@@ -15,6 +15,17 @@ jobs:
         uses: actions-rust-lang/setup-rust-toolchain@v1
       - name: Format Check
         run: cargo fmt --check
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Rust Toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+      # Already avalible since it is listed in rust-toolchain.toml
+      - name: Clippy
+        run: cargo clippy -- -Dwarnings
   test:
     name: Test
     runs-on: ubuntu-latest
