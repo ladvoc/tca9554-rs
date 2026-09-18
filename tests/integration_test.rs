@@ -2,7 +2,7 @@ use embedded_hal_async::i2c::{ErrorKind, NoAcknowledgeSource};
 use embedded_hal_mock::eh1::i2c::{Mock, Transaction};
 use tca9554::{Address, Tca9554};
 
-#[tokio::test]
+#[pollster::test]
 async fn test_write_direction() {
     let i2c = Mock::new(&[Transaction::write(0x20, vec![0x03, 0xAA])]);
     let mut driver = Tca9554::new(i2c, Address::standard());
@@ -10,23 +10,31 @@ async fn test_write_direction() {
     driver.release().done();
 }
 
-#[tokio::test]
+#[pollster::test]
 async fn test_write_output() {
-    let i2c = Mock::new(&[Transaction::write(0x20, vec![0x01, 0xAA])]);
+    let i2c = Mock::new(&[
+        Transaction::write(0x20, vec![0x01, 0xAA]),
+        Transaction::write(0x20, vec![0x01, 0xAB]),
+    ]);
     let mut driver = Tca9554::new(i2c, Address::standard());
     driver.write_output(0xAA).await.unwrap();
+    driver.pin(0).set_output_state(true).await.unwrap();
     driver.release().done();
 }
 
-#[tokio::test]
+#[pollster::test]
 async fn test_write_polarity() {
-    let i2c = Mock::new(&[Transaction::write(0x20, vec![0x02, 0xAA])]);
+    let i2c = Mock::new(&[
+        Transaction::write(0x20, vec![0x02, 0xAA]),
+        Transaction::write(0x20, vec![0x02, 0xAB]),
+    ]);
     let mut driver = Tca9554::new(i2c, Address::standard());
     driver.write_polarity(0xAA).await.unwrap();
+    driver.pin(0).set_polarity(true).await.unwrap();
     driver.release().done();
 }
 
-#[tokio::test]
+#[pollster::test]
 async fn test_write_error() {
     let no_ack = ErrorKind::NoAcknowledge(NoAcknowledgeSource::Address);
     let i2c = Mock::new(&[Transaction::write(0x20, vec![0x03, 0xAA]).with_error(no_ack)]);
@@ -35,7 +43,7 @@ async fn test_write_error() {
     driver.release().done();
 }
 
-#[tokio::test]
+#[pollster::test]
 async fn test_read_input() {
     let i2c = Mock::new(&[Transaction::write_read(0x20, vec![0x00], vec![0xAA])]);
     let mut driver = Tca9554::new(i2c, Address::standard());
@@ -43,7 +51,7 @@ async fn test_read_input() {
     driver.release().done();
 }
 
-#[tokio::test]
+#[pollster::test]
 async fn test_reset() {
     let i2c = Mock::new(&[
         Transaction::write(0x20, vec![0x03, 0xFF]),

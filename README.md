@@ -13,7 +13,7 @@ Driver for the TCA9554(A) I/O expander, implementing the I²C trait from [embedd
 - [x] Reset registers to power-on defaults
 - [x] Async trait implementation
 - [ ] Sync trait implementation
-- [ ] Decompose the driver into discrete pins
+- [x] Decompose the driver into discrete pins
 
 ## Contributions
 

@@ -14,14 +14,18 @@ categories = ["no-std", "embedded", "hardware-support"]
 
 [features]
 defmt = ["dep:defmt"]
+interrupt = ["dep:embassy-sync", "dep:embedded-hal"]
 
 [dependencies]
 embedded-hal-async = { version = "1.0.0" }
 defmt = { version = "1", optional = true }
+futures = { version = "0.3.32", default-features = false }
+embedded-hal = { version = "1.0.0", optional = true }
+embassy-sync = { version = "0.8.0", optional = true }
 
 [dev-dependencies]
 embedded-hal-mock = { version = "0.11.1", features = ["embedded-hal-async"] }
-tokio = { version = "1.48.0", features = ["rt", "macros"] }
+pollster = { version = "0.4.0", features = ["macro"] }
 
 [profile.release]
 lto = true

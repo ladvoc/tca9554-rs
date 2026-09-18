@@ -6,6 +6,10 @@
 
 mod address;
 mod driver;
+#[cfg(feature = "interrupt")]
+mod interrupt;
+mod pin;
 
 pub use address::Address;
 pub use driver::Tca9554;
+
